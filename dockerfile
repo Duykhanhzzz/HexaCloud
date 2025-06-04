@@ -8,9 +8,7 @@ RUN mvn clean package -DskipTests
 # Run stage
 
 FROM openjdk:17-jdk-slim
+COPY --from=build /app/target/*.jar /app/app.jar
 WORKDIR /app
-
-COPY --from=build /app/target/HexaCloud-0.0.1-SNAPSHOT.war hexacloud.war
-EXPOSE 8080 
-
-ENTRYPOINT ["java","-jar","hexacloud.war"]
+EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
