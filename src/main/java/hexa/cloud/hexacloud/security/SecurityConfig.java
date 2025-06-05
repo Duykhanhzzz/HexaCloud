@@ -14,14 +14,24 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
     }
-    @Bean
+   // ...existing code...
+@Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/**", "/css/**", "/js/**").permitAll()
+            .requestMatchers(
+                "/api/auth/**",
+                "/api/users/**",
+    "/swagger-ui/**",
+    "/swagger-ui.html",
+    "/swagger-resources/**",
+    "/v3/api-docs/**",
+    "/v2/api-docs/**",
+    "/webjars/**"
+            ).permitAll()
             .anyRequest().authenticated()
         );
     return http.build();
-    }
+}
 }

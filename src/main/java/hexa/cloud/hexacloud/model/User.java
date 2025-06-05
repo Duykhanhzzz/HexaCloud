@@ -72,4 +72,9 @@ public void setPassword(String password) {
     this.password = password;
 }
 // ...existing code...
+
+public int getId() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getId'");
+}
 }
