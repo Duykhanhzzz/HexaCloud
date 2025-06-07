@@ -6,6 +6,8 @@ import java.time.OffsetDateTime;
 @Entity
 @Table(name = "vps")
 public class Vps {
+    @Column(name = "owner_id")
+    private Integer ownerId;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -47,4 +49,7 @@ public class Vps {
 
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(OffsetDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public Integer getOwnerId() { return ownerId; }
+    public void setOwnerId(Integer ownerId) { this.ownerId = ownerId; }
 }

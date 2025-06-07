@@ -2,16 +2,16 @@ package hexa.cloud.hexacloud.dto.request.response;
 
 public class VpsResponseDTO {
     private Long id;
-    private String name;    
+    private String name;
     private String ipAddress;
     private String status;
     private String osType;
     private String createdAt;
     private String updatedAt;
     private UserResponseDTO user;
-    
-    public VpsResponseDTO() {
-    }
+
+    public VpsResponseDTO() {}
+
     public VpsResponseDTO(Long id, String name, String ipAddress, String status, String osType, String createdAt, String updatedAt, UserResponseDTO user) {
         this.id = id;
         this.name = name;
@@ -22,6 +22,7 @@ public class VpsResponseDTO {
         this.updatedAt = updatedAt;
         this.user = user;
     }
+
     public Long getId() {
         return id;
     }

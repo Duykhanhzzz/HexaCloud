@@ -1,72 +1,28 @@
 package hexa.cloud.hexacloud.dto.request;
 
-public class VpsRequestDTO implements java.io.Serializable {
+import java.io.Serializable;
 
-    private String vpsId;
-    private String vpsName;
-    private String vpsDescription;
-    private String vpsImage;
-    private String vpsFlavor;
-    private String vpsNetwork;
+public class VpsRequestDTO implements Serializable {
+    private String name;
+    private String ipAddress;
+    private String status;
+    private String osType;
+    private Integer ownerId;
 
-    public VpsRequestDTO() {
-    }
+    public VpsRequestDTO() {}
 
-    public VpsRequestDTO(String vpsId, String vpsName, String vpsDescription, String vpsImage, String vpsFlavor, String vpsNetwork) {
-        this.vpsId = vpsId;
-        this.vpsName = vpsName;
-        this.vpsDescription = vpsDescription;
-        this.vpsImage = vpsImage;
-        this.vpsFlavor = vpsFlavor;
-        this.vpsNetwork = vpsNetwork;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getVpsId() {
-        return vpsId;
-    }
+    public String getIpAddress() { return ipAddress; }
+    public void setIpAddress(String ipAddress) { this.ipAddress = ipAddress; }
 
-    public void setVpsId(String vpsId) {
-        this.vpsId = vpsId;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public String getVpsName() {
-        return vpsName;
-    }
+    public String getOsType() { return osType; }
+    public void setOsType(String osType) { this.osType = osType; }
 
-    public void setVpsName(String vpsName) {
-        this.vpsName = vpsName;
-    }
-
-    public String getVpsDescription() {
-        return vpsDescription;
-    }
-
-    public void setVpsDescription(String vpsDescription) {
-        this.vpsDescription = vpsDescription;
-    }
-
-    public String getVpsImage() {
-        return vpsImage;
-    }
-
-    public void setVpsImage(String vpsImage) {
-        this.vpsImage = vpsImage;
-    }
-
-    public String getVpsFlavor() {
-        return vpsFlavor;
-    }
-
-    public void setVpsFlavor(String vpsFlavor) {
-        this.vpsFlavor = vpsFlavor;
-    }
-
-    public String getVpsNetwork() {
-        return vpsNetwork;
-    }
-
-    public void setVpsNetwork(String vpsNetwork) {
-        this.vpsNetwork = vpsNetwork;
-    }
-    
+    public Integer getOwnerId() { return ownerId; }
+    public void setOwnerId(Integer ownerId) { this.ownerId = ownerId; }
 }

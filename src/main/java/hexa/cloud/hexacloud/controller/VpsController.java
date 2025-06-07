@@ -18,27 +18,54 @@ public class VpsController {
     private VpsRepository vpsRepository;
 
     @PostMapping("/")
-    public VpsResponseDTO createVps(@RequestBody VpsRequestDTO vpsRequestDTO) {
+    public VpsResponseDTO createVps(@RequestBody VpsRequestDTO dto) {
         Vps vps = new Vps();
-        vps.setName(vpsRequestDTO.getVpsName());
-        vps.setStatus("active");
-        // Set các trường khác nếu có
+        vps.setName(dto.getName());
+        vps.setIpAddress(dto.getIpAddress());
+        vps.setStatus(dto.getStatus());
+        vps.setOs_type(dto.getOsType());
+        vps.setOwnerId(dto.getOwnerId());
         Vps saved = vpsRepository.save(vps);
-        return new VpsResponseDTO(
-            (long) saved.getId(),
-            saved.getName(),
-            saved.getIpAddress(),
-            saved.getStatus(),
-            saved.getOs_type(),
-            saved.getCreatedAt() != null ? saved.getCreatedAt().toString() : null,
-            saved.getUpdatedAt() != null ? saved.getUpdatedAt().toString() : null,
-            null // user nếu có
-        );
+        return toResponseDTO(saved);
     }
 
     @GetMapping("/")
     public List<VpsResponseDTO> getAllVps() {
-        return vpsRepository.findAll().stream().map(vps -> new VpsResponseDTO(
+        return vpsRepository.findAll().stream()
+            .map(this::toResponseDTO)
+            .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public VpsResponseDTO getVpsById(@PathVariable Long id) {
+        Vps vps = vpsRepository.findById(id.intValue())
+            .orElseThrow(() -> new RuntimeException("VPS not found"));
+        return toResponseDTO(vps);
+    }
+
+    @PutMapping("/{id}")
+    public VpsResponseDTO updateVps(@PathVariable Long id, @RequestBody VpsRequestDTO dto) {
+        Vps vps = vpsRepository.findById(id.intValue())
+            .orElseThrow(() -> new RuntimeException("VPS not found"));
+        vps.setName(dto.getName());
+        vps.setIpAddress(dto.getIpAddress());
+        vps.setStatus(dto.getStatus());
+        vps.setOs_type(dto.getOsType());
+        vps.setOwnerId(dto.getOwnerId());
+        Vps saved = vpsRepository.save(vps);
+        return toResponseDTO(saved);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteVps(@PathVariable Long id) {
+        if (!vpsRepository.existsById(id.intValue())) {
+            throw new RuntimeException("VPS not found");
+        }
+        vpsRepository.deleteById(id.intValue());
+    }
+
+    private VpsResponseDTO toResponseDTO(Vps vps) {
+        return new VpsResponseDTO(
             (long) vps.getId(),
             vps.getName(),
             vps.getIpAddress(),
@@ -46,23 +73,7 @@ public class VpsController {
             vps.getOs_type(),
             vps.getCreatedAt() != null ? vps.getCreatedAt().toString() : null,
             vps.getUpdatedAt() != null ? vps.getUpdatedAt().toString() : null,
-            null
-        )).collect(Collectors.toList());
-    }
-
-    @GetMapping("/{id}")
-    public VpsResponseDTO getVpsById(@PathVariable Long id) {
-        Vps vps = vpsRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("VPS not found"));
-        return new VpsResponseDTO(
-            Long.valueOf(vps.getId()),
-            vps.getName(),
-            vps.getIpAddress(),
-            vps.getStatus(),
-            vps.getOs_type(),
-            vps.getCreatedAt() != null ? vps.getCreatedAt().toString() : null,
-            vps.getUpdatedAt() != null ? vps.getUpdatedAt().toString() : null,
-            null
+            null // Nếu muốn trả về user, map thêm ở đây
         );
     }
 }

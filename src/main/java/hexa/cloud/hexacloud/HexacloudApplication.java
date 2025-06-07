@@ -10,5 +10,4 @@ public class HexacloudApplication {
 		SpringApplication.run(HexacloudApplication.class, args);
 		
 	}
-
 }

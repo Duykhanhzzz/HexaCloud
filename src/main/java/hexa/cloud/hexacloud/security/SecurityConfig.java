@@ -23,6 +23,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             .requestMatchers(
                 "/api/auth/**",
                 "/api/users/**",
+                "/api/vps/**",
     "/swagger-ui/**",
     "/swagger-ui.html",
     "/swagger-resources/**",
