@@ -1,5 +1,6 @@
 package hexa.cloud.hexacloud.controller;
 
+import hexa.cloud.hexacloud.dto.request.LoginRequestDTO;
 import hexa.cloud.hexacloud.dto.request.UserRequestDTO;
 import hexa.cloud.hexacloud.dto.request.response.UserResponseDTO;
 import hexa.cloud.hexacloud.model.User;
@@ -59,32 +60,32 @@ public class UserController {
 
     // Đăng nhập, gửi mail thông báo
     @PostMapping("/login")
-    public UserResponseDTO login(@RequestBody UserRequestDTO dto) {
-        User user = userRepository.findByUsername(dto.getUsername())
-            .orElseThrow(() -> new RuntimeException("User not found"));
-        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
-        }
-        List<String> roles = userRoleRepository.findByUserId(user.getId())
-            .stream().map(ur -> ur.getRole().getName()).collect(Collectors.toList());
-
-        String roleMsg = roles.contains("ADMIN") ? "Admin has been logged" : "User has been logged";
-        emailService.sendEmail(
-            user.getEmail(),
-            "Login Notification",
-            roleMsg + " at " + OffsetDateTime.now()
-        );
-
-        UserResponseDTO response = new UserResponseDTO(
-            user.getId(),
-            user.getUsername(),
-            user.getEmail(),
-            user.getFullName(),
-            user.getStatus()
-        );
-        response.setRoles(roles);
-        return response;
+public UserResponseDTO login(@RequestBody LoginRequestDTO dto) {
+    User user = userRepository.findByUsername(dto.getUsername())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+    if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+        throw new RuntimeException("Invalid password");
     }
+    List<String> roles = userRoleRepository.findByUserId(user.getId())
+        .stream().map(ur -> ur.getRole().getName()).collect(Collectors.toList());
+
+    String roleMsg = roles.contains("ADMIN") ? "Admin has been logged" : "User has been logged";
+    emailService.sendEmail(
+        user.getEmail(),
+        "Login Notification",
+        roleMsg + " at " + OffsetDateTime.now()
+    );
+
+    UserResponseDTO response = new UserResponseDTO(
+        user.getId(),
+        user.getUsername(),
+        user.getEmail(),
+        user.getFullName(),
+        user.getStatus()
+    );
+    response.setRoles(roles);
+    return response;
+}
 
     // ADMIN: Xem tất cả user
     @GetMapping
