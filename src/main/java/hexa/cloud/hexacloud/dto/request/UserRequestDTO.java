@@ -5,7 +5,6 @@ public class UserRequestDTO {
     private String password;
     private String email;
     private String fullName;
-    private String otp;
 
     public UserRequestDTO() {}
 
@@ -27,7 +26,4 @@ public class UserRequestDTO {
 
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
-
-    public String getOtp() { return otp; }
-    public void setOtp(String otp) { this.otp = otp; }
 }
