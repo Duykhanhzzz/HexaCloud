@@ -68,7 +68,6 @@ public class UserController {
         List<String> roles = userRoleRepository.findByUserId(user.getId())
             .stream().map(ur -> ur.getRole().getName()).collect(Collectors.toList());
 
-        // Gửi mail thông báo login
         String roleMsg = roles.contains("ADMIN") ? "Admin has been logged" : "User has been logged";
         emailService.sendEmail(
             user.getEmail(),
