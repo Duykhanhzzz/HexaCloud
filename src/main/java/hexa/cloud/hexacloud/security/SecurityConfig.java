@@ -21,15 +21,14 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(
-                "/api/auth/**",
-                "/api/users/**",
-                "/api/vps/**",
-    "/swagger-ui/**",
-    "/swagger-ui.html",
-    "/swagger-resources/**",
-    "/v3/api-docs/**",
-    "/v2/api-docs/**",
-    "/webjars/**"
+                "/api/users/register",
+                "/api/users/login",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/swagger-resources/**",
+                "/v3/api-docs/**",
+                "/v2/api-docs/**",
+                "/webjars/**"
             ).permitAll()
             .anyRequest().authenticated()
         );

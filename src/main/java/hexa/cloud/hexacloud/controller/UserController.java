@@ -124,4 +124,22 @@ public class UserController {
         response.setRoles(roles);
         return response;
     }
+
+    // ADMIN & USER: Lấy thông tin user theo id
+    @GetMapping("/{userId}")
+    public UserResponseDTO getUserById(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        List<String> roles = userRoleRepository.findByUserId(user.getId())
+            .stream().map(ur -> ur.getRole().getName()).collect(Collectors.toList());
+        UserResponseDTO response = new UserResponseDTO(
+            user.getId(),
+            user.getUsername(),
+            user.getEmail(),
+            user.getFullName(),
+            user.getStatus()
+        );
+        response.setRoles(roles);
+        return response;
+    }
 }
