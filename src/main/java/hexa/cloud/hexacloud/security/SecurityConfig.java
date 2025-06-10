@@ -21,6 +21,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
+        .formLogin(form -> form.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(
                 "/api/users/register",
@@ -44,7 +45,9 @@ public WebMvcConfigurer corsConfigurer() {
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("*");
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(false); // Nếu không dùng cookie/session, để false
         }
     };
 }
