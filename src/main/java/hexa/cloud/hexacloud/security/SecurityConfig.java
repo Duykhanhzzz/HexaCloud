@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -23,8 +24,8 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .formLogin(form -> form.disable())
         .authorizeHttpRequests(auth -> auth
+            .requestMatchers(HttpMethod.POST, "/api/users/register", "/api/users/login").permitAll()
             .requestMatchers(
-                "/api/users/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
                 "/swagger-resources/**",
@@ -44,9 +45,9 @@ public WebMvcConfigurer corsConfigurer() {
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(false); // Nếu không dùng cookie/session, để false
+                .allowCredentials(false);
         }
     };
 }
