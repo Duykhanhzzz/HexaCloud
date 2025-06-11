@@ -2,6 +2,7 @@ package hexa.cloud.hexacloud.model;
 
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -30,12 +31,6 @@ public class User {
 
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
-
-    @Column(name = "otp")
-    private String otp;
-
-    @Column(name = "otp_expired_at")
-    private java.time.OffsetDateTime otpExpiredAt;
 
     @PrePersist
     protected void onCreate() {
@@ -73,9 +68,4 @@ public class User {
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(OffsetDateTime updatedAt) { this.updatedAt = updatedAt; }
 
-    public String getOtp() { return otp; }
-    public void setOtp(String otp) { this.otp = otp; }
-
-    public java.time.OffsetDateTime getOtpExpiredAt() { return otpExpiredAt; }
-    public void setOtpExpiredAt(java.time.OffsetDateTime otpExpiredAt) { this.otpExpiredAt = otpExpiredAt; }
 }

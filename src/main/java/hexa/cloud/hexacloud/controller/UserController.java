@@ -2,6 +2,7 @@ package hexa.cloud.hexacloud.controller;
 
 import hexa.cloud.hexacloud.dto.request.LoginRequestDTO;
 import hexa.cloud.hexacloud.dto.request.UserRequestDTO;
+import hexa.cloud.hexacloud.dto.request.UserRegisterRequestDTO;
 import hexa.cloud.hexacloud.dto.request.response.UserResponseDTO;
 import hexa.cloud.hexacloud.model.User;
 import hexa.cloud.hexacloud.model.Role;
@@ -34,60 +35,62 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     // Đăng ký user, gán role USER mặc định
-    
     @PostMapping("/register")
-    public UserResponseDTO register(@RequestBody UserRequestDTO dto) {
+    public String register(@RequestBody UserRegisterRequestDTO dto) {
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
             throw new RuntimeException("Username already exists");
         }
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
+
         User user = new User();
         user.setUsername(dto.getUsername());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setFullName(dto.getFullName());
         user.setStatus("ACTIVE");
-        user = userRepository.save(user);
+        userRepository.save(user);
 
         // Gán role USER mặc định
         Role userRole = roleRepository.findByName("USER");
-        userRoleRepository.save(new UserRole(user, userRole));
+        if (userRole == null) throw new RuntimeException("Role USER not found in database");
+        UserRole ur = new UserRole();
+        ur.setUser(user);
+        ur.setRole(userRole);
+        userRoleRepository.save(ur);
 
-        UserResponseDTO response = new UserResponseDTO(user.getId(), user.getUsername(), user.getEmail(), user.getFullName(), user.getStatus());
-        response.setRoles(List.of("USER"));
-        return response;
+        return "Register success";
     }
 
     // Đăng nhập, gửi mail thông báo
-    @PostMapping("/abc")
-public UserResponseDTO login(@RequestBody LoginRequestDTO dto) {
-    User user = userRepository.findByUsername(dto.getUsername())
-        .orElseThrow(() -> new RuntimeException("User not found"));
-    if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-        throw new RuntimeException("Invalid password");
+    @PostMapping("/login")
+    public UserResponseDTO login(@RequestBody LoginRequestDTO dto) {
+        User user = userRepository.findByUsername(dto.getUsername())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+        List<String> roles = userRoleRepository.findByUserId(user.getId())
+            .stream().map(ur -> ur.getRole().getName()).collect(Collectors.toList());
+
+        String roleMsg = roles.contains("ADMIN") ? "Admin has been logged" : "User has been logged";
+        emailService.sendEmail(
+            user.getEmail(),
+            "Login Notification",
+            roleMsg + " at " + OffsetDateTime.now()
+        );
+
+        UserResponseDTO response = new UserResponseDTO(
+            user.getId(),
+            user.getUsername(),
+            user.getEmail(),
+            user.getFullName(),
+            user.getStatus()
+        );
+        response.setRoles(roles);
+        return response;
     }
-    List<String> roles = userRoleRepository.findByUserId(user.getId())
-        .stream().map(ur -> ur.getRole().getName()).collect(Collectors.toList());
-
-    String roleMsg = roles.contains("ADMIN") ? "Admin has been logged" : "User has been logged";
-    emailService.sendEmail(
-        user.getEmail(),
-        "Login Notification",
-        roleMsg + " at " + OffsetDateTime.now()
-    );
-
-    UserResponseDTO response = new UserResponseDTO(
-        user.getId(),
-        user.getUsername(),
-        user.getEmail(),
-        user.getFullName(),
-        user.getStatus()
-    );
-    response.setRoles(roles);
-    return response;
-}
 
     // ADMIN: Xem tất cả user
     @GetMapping
@@ -147,7 +150,6 @@ public UserResponseDTO login(@RequestBody LoginRequestDTO dto) {
         response.setRoles(roles);
         return response;
     }
-
 }
 
 

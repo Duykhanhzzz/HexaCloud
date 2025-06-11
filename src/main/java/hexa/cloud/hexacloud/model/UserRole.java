@@ -5,29 +5,28 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "user_roles")
 public class UserRole {
-    @EmbeddedId
-    private UserRoleId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @MapsId("roleId")
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    // Constructors
     public UserRole() {}
-
     public UserRole(User user, Role role) {
         this.user = user;
         this.role = role;
-        this.id = new UserRoleId(user.getId(), role.getId());
     }
 
-    public UserRoleId getId() { return id; }
-    public void setId(UserRoleId id) { this.id = id; }
+    // Getters/setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }

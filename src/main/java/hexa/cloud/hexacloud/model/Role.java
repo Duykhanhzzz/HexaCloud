@@ -7,21 +7,19 @@ import jakarta.persistence.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(length = 50, unique = true, nullable = false)
     private String name;
 
-    @Column(length = 255)
-    private String description;
+    public Role() {}
 
-    // Getters and setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Role(String name) {
+        this.name = name;
+    }
 
+    // Getters/setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
 }

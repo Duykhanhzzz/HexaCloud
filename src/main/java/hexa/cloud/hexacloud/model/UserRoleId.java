@@ -1,10 +1,8 @@
 package hexa.cloud.hexacloud.model;
 
-import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
 public class UserRoleId implements Serializable {
     private Long userId;
     private Integer roleId;
@@ -22,6 +20,7 @@ public class UserRoleId implements Serializable {
     public Integer getRoleId() { return roleId; }
     public void setRoleId(Integer roleId) { this.roleId = roleId; }
 
+    // equals & hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -29,7 +28,6 @@ public class UserRoleId implements Serializable {
         UserRoleId that = (UserRoleId) o;
         return Objects.equals(userId, that.userId) && Objects.equals(roleId, that.roleId);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(userId, roleId);
