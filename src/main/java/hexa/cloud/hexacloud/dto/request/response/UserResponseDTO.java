@@ -1,26 +1,25 @@
 package hexa.cloud.hexacloud.dto.request.response;
 
-import java.util.List;
-
 public class UserResponseDTO {
     private Long id;
     private String username;
     private String email;
     private String fullName;
     private String status;
-    private List<String> roles;
+    private String role;
 
     public UserResponseDTO() {}
 
-    public UserResponseDTO(Long id, String username, String email, String fullName, String status) {
+    public UserResponseDTO(Long id, String username, String email, String fullName, String status, String role) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.fullName = fullName;
         this.status = status;
+        this.role = role;
     }
 
-    // Getters and setters (không có password)
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -36,6 +35,6 @@ public class UserResponseDTO {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public List<String> getRoles() { return roles; }
-    public void setRoles(List<String> roles) { this.roles = roles; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

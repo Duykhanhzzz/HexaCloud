@@ -26,6 +26,9 @@ public class User {
     @Column(length = 255)
     private String status;
 
+    @Column(length = 20)
+    private String role; // ADMIN hoặc USER
+
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
@@ -61,6 +64,9 @@ public class User {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }
