@@ -145,23 +145,7 @@ public UserResponseDTO login(@RequestBody LoginRequestDTO dto) {
         response.setRoles(roles);
         return response;
     }
+
 }
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(csrf -> csrf.disable())
-        .formLogin(form -> form.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers(HttpMethod.POST, "/api/users/register", "/api/users/login").permitAll()
-            .requestMatchers(
-                "/swagger-ui/**",
-                "/swagger-ui.html",
-                "/swagger-resources/**",
-                "/v3/api-docs/**",
-                "/v2/api-docs/**",
-                "/webjars/**"
-            ).permitAll()
-            .anyRequest().authenticated()
-        );
-    return http.build();
-}
+
+
