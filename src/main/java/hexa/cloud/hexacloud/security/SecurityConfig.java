@@ -41,7 +41,7 @@ public class SecurityConfig {
                     "/v2/api-docs/**",
                     "/webjars/**"
                 ).permitAll()
-                .anyRequest().authenticated()
+                
             );
         return http.build();
     }
