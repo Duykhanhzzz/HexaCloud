@@ -29,8 +29,6 @@ public class SecurityConfig {
             .httpBasic(basic -> basic.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/api/users/login",
-                    "/api/users/register",
                     "/api/users/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
