@@ -114,7 +114,10 @@ public UserResponseDTO login(@RequestBody LoginRequestDTO dto) {
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
         user.setUsername(dto.getUsername());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        // Chỉ mã hóa lại password nếu có password mới
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
         user.setEmail(dto.getEmail());
         user.setFullName(dto.getFullName());
         user = userRepository.save(user);
