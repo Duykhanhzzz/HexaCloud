@@ -24,38 +24,38 @@ public class SecurityConfig {
     }
 
     @Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .cors(Customizer.withDefaults())
-        .csrf(csrf -> csrf.disable())
-        .formLogin(form -> form.disable())
-        .httpBasic(basic -> basic.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/users/**").permitAll()
-            .requestMatchers(
-                "/swagger-ui/**",
-                "/swagger-ui.html",
-                "/swagger-resources/**",
-                "/v3/api-docs/**",
-                "/v2/api-docs/**",
-                "/webjars/**"
-            ).permitAll()
-            .anyRequest().authenticated()
-        );
-    return http.build();
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(Customizer.withDefaults())
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/api/users/login",
+                    "/api/users/register",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/swagger-resources/**",
+                    "/v3/api-docs/**",
+                    "/v2/api-docs/**",
+                    "/webjars/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+            );
+        return http.build();
     }
 
-        @Bean
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("*")); // hỗ trợ mọi nguồn
+        config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true); // nếu frontend cần gửi cookie / token
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
 }
