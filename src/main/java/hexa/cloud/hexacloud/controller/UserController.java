@@ -18,6 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -33,6 +34,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     // Đăng ký user, gán role USER mặc định
+    
     @PostMapping("/register")
     public UserResponseDTO register(@RequestBody UserRequestDTO dto) {
         if (userRepository.findByUsername(dto.getUsername()).isPresent()) {
@@ -59,7 +61,7 @@ public class UserController {
     }
 
     // Đăng nhập, gửi mail thông báo
-    @PostMapping("/login")
+    @PostMapping("/abc")
 public UserResponseDTO login(@RequestBody LoginRequestDTO dto) {
     User user = userRepository.findByUsername(dto.getUsername())
         .orElseThrow(() -> new RuntimeException("User not found"));
