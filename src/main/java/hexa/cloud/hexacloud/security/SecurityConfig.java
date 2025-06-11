@@ -20,23 +20,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(csrf -> csrf.disable())
-        .formLogin(form -> form.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers(HttpMethod.POST, "/api/users/register", "/api/users/login").permitAll()
-            .requestMatchers(
-                "/swagger-ui/**",
-                "/swagger-ui.html",
-                "/swagger-resources/**",
-                "/v3/api-docs/**",
-                "/v2/api-docs/**",
-                "/webjars/**"
-            ).permitAll()
-            .anyRequest().authenticated()
-        );
-    return http.build();
-}
+        http
+            .csrf(csrf -> csrf.disable())
+            .formLogin(form -> form.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/users/**").permitAll() // <-- permitAll cho mọi method và endpoint users
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/swagger-resources/**",
+                    "/v3/api-docs/**",
+                    "/v2/api-docs/**",
+                    "/webjars/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+            );
+        return http.build();
+    }
 
 @Bean
 public WebMvcConfigurer corsConfigurer() {
