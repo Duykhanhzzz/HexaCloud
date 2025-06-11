@@ -36,12 +36,10 @@ public class UserService {
     public User login(String username, String rawPassword) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (passwordEncoder.matches(rawPassword, user.getPassword())) {
-            return user;
-        } else {
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
+        return user;
     }
 
     // CRUD
